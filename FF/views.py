@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from .parsers import parse_session_packet, parse_car_status_packet
-from .models import SessionData, CarStatus
+from .models import SessionData, CarStatus ,Telemetria, LapData, Penaty
 from django.http import JsonResponse
+
 # Create your views here.
 def salvar_dados_ups(data):
     packet_id = data[5]
