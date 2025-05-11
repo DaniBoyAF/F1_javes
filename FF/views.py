@@ -99,8 +99,6 @@ class TelemetriaView(View):
         freio = request.POST.get('freio')
         acelerador = request.POST.get('acelerador')
         rpm_motor = request.POST.get('rpm_motor')
-        rpm_max = request.POST.get('rpm_max')
-        rpm_ideal = request.POST.get('rpm_ideal')
         drs_ativo = request.POST.get('drs_ativo') == 'true'
         ers_disponivel = request.POST.get('ers_disponivel')
         nivel_combustivel = request.POST.get('nivel_combustivel')
@@ -113,8 +111,6 @@ class TelemetriaView(View):
             freio=freio,
             Acelerador=acelerador,
             rpm_motor=rpm_motor,
-            rpm_max=rpm_max,
-            rpm_ideal=rpm_ideal,
             drs_ativo=drs_ativo,
             ers_disponivel=ers_disponivel,
             nivel_combustivel=nivel_combustivel
