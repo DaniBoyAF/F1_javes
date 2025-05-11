@@ -16,12 +16,21 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('carro_id', models.IntegerField()),
+                ('nome_piloto', models.CharField(max_length=100)),
                 ('desgaste_pneus', models.JSONField()),
                 ('temperatura_pneus', models.JSONField()),
                 ('temperatura_real', models.JSONField()),
+                ('composto_visual', models.CharField(max_length=20)),
+                ('tipo_pneus', models.CharField(max_length=20)),
+                ('dano_aerodinamicos_frontal', models.FloatField()),
+                ('dano_frontal_esquerdo', models.FloatField()),
+                ('dano_frontal_direito', models.FloatField()),
+                ('dano_aerodinamicos_traseiro', models.FloatField()),
+                ('danos_no_chassis', models.FloatField()),
+                
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
             ],
-        ),
+        ),#estar completo
         migrations.CreateModel(
             name='SessionData',
             fields=[
@@ -29,6 +38,11 @@ class Migration(migrations.Migration):
                 ('clima', models.CharField(max_length=20)),
                 ('temperatura_pista', models.IntegerField()),
                 ('temperatura_ar', models.IntegerField()),
+                ('zonas_drs', models.IntegerField()),
+                ('pista', models.CharField(max_length=100)),
+                ('tempo_total', models.FloatField()),
+                ('tipo_sessao', models.CharField(max_length=20)),
+                ('num_voltas', models.IntegerField()),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
             ],
         ),
@@ -42,7 +56,63 @@ class Migration(migrations.Migration):
                 ('tempo', models.FloatField()),
                 ('posicao', models.IntegerField()),
                 ('velocidade', models.FloatField()),
+                ('marcha', models.IntegerField()),
+                ('freio', models.FloatField()),
+                ('Acelerador', models.FloatField()),
+                ('rpm_motor', models.IntegerField()),
+                ('drs_ativo', models.BooleanField()),
+                ('ers_disponivel', models.FloatField()),
+                ('nivel_combustivel', models.FloatField()),
                 ('tipo_pneus', models.CharField(max_length=20)),
+                ('timestamp', models.DateTimeField(auto_now_add=True)),
             ],
         ),
+        migrations.CreateModel(
+            name='LapData',
+            fields=[
+                ("id", models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                 ('carro_id', models.IntegerField()),
+                 ('nome_piloto', models.CharField(max_length=100)),
+                 ('volta', models.IntegerField()),
+                 ('tempo_volta', models.FloatField()),
+                 ('tempo_setor1', models.FloatField()),
+                 ('tempo_setor2', models.FloatField()),
+                 ('tempo_setor3', models.FloatField()),
+                 ('posicao', models.IntegerField()),
+                 ('volta_valida', models.BooleanField()),
+                 ('timestamp', models.DateTimeField(auto_now_add=True)),
+            ],
+        ),
+        migrations.CreateModel(
+            nome='Penaty',
+            fields=[
+                ('numero_carro',models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('nome_piloto', models.CharField(max_length=100)),
+                ('volta', models.IntegerField()),
+                ('tipo_punicao', models.CharField(max_length=100)),
+                ('tempo_punicao', models.FloatField()),
+                ('cumprida', models.BooleanField(default=False)),
+                ('timestamp', models.DateTimeField(auto_now_add=True)),
+            ]
+        ),
+        migrations.CreateModel(
+            nome='Amizade',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('solicitante', models.CharField(max_length=100)),
+                ('destinatario', models.CharField(max_length=100)),
+                ('status', models.CharField(max_length=20)),
+            ]
+        ),
+        migrations.CreateModel(
+            nome='Usuario',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('nome', models.CharField(max_length=1000)),
+                ('email', models.EmailField(max_length=1000, unique=True)),
+                ('senha', models.CharField(max_length=1000)),
+            ]
+        )
+          
     ]

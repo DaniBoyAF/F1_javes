@@ -27,8 +27,6 @@ class Telemetria(models.Model):
     freio = models.FloatField()
     Acelerador = models.FloatField()
     rpm_motor = models.IntegerField()
-    rpm_max = models.IntegerField()
-    rpm_ideal = models.IntegerField()
     drs_ativo = models.BooleanField()
     ers_disponivel = models.FloatField()
     nivel_combustivel = models.FloatField()
@@ -47,12 +45,18 @@ class SessionData(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
 class CarStatus(models.Model):
+    nome_piloto = models.CharField(max_length=100)
     carro_id = models.IntegerField()
     desgaste_pneus = models.JSONField()  # lista com 4 valores
     temperatura_pneus = models.JSONField()
     temperatura_real = models.JSONField()
     composto_visual = models.CharField(max_length=20)
     tipo_pneus = models.CharField(max_length=20)  # exemplo: "soft", "medium", "hard"
+    dano_aerodinamicos_frontal = models.FloatField()  # percentual de dano
+    dano_frontal_esquerdo = models.FloatField()  # percentual de dano
+    dano_frontal_direito = models.FloatField()  # percentual de dano
+    dano_aerodinamicos_traseiro = models.FloatField()  # percentual de dano
+    danos_no_chassis = models.FloatField()  # percentual de dano
     timestamp = models.DateTimeField(auto_now_add=True)
    
 
