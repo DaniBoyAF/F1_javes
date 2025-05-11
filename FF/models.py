@@ -1,10 +1,21 @@
 from django.db import models
+from django.contrib.auth.hashers import make_password
 # Create your models here.
 class Usuario(models.Model):
     Nome = models.CharField(max_length=1000)
     Email = models.EmailField(max_length=1000)
-    Senha = models.CharField(max_length=1000)
+    Senha = models.CharField(max_length=200)
     
+    def save(self, *args, **kwargs):
+        # Aqui você pode adicionar lógica para verificar se o email já existe
+        if Usuario.objects.filter(Email=self.Email).exists():
+            raise ValueError("Email já existe")
+        return super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        if self.Senha:
+            self.Senha = make_password(self.Senha)
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return self.Nome
 class Amizade(models.Model):

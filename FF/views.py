@@ -1,13 +1,33 @@
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render ,redirect
 from django.views import View
-from FF.models import Telemetria, SessionData, CarStatus, LapData, Penaty, Usuario, Amizade
+from FF.models import Telemetria, SessionData, CarStatus, LapData, Penaty, Usuario, Amizade 
 from django.http import JsonResponse
+from django.contrib.auth.hashers import check_password
+from django.contrib import messages
 
 class InicioView(View):
     def get(self, request):
         # Renderizar a página inicial
         return render(request, 'index.html')
+class login_view(View):
+    def get(self,request):
+        # Renderizar a página de login
+        return render(request, 'login.html')
+    def post(self,request):
+        email = request.POST.get('email')
+        senha = request.POST.get('senha')
+        if not email or not senha:
+           return JsonResponse({'status': 'error', 'message': 'Email e senha são obrigatórios.'})
+        try:
+            usuario= Usuario.objects.get(Email=email)
+            if check_password(senha, usuario.Senha):
+               return redirect('index')
+            else:
+             messages.error(request, 'Senha incorreta')
+        except Usuario.DoesNotExist:
+             messages.error(request, 'Usuário não encontrado')
+        return render(request, 'login.html')
 class salvar_dados_udp(View):
     def post(self,request):
         # Obtem todos os dados de telemetria
