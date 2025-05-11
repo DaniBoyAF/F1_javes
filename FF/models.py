@@ -40,15 +40,16 @@ class Telemetria(models.Model):
     rpm_motor = models.IntegerField()
     drs_ativo = models.BooleanField()
     ers_disponivel = models.FloatField()
+    ers_percentagem = models.FloatField()
     nivel_combustivel = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
     
     
 class SessionData(models.Model):
     clima = models.CharField(max_length=20)
-    temperatura_pista = models.IntegerField()
-    temperatura_ar = models.IntegerField()
-    zonas_drs = models.IntegerField()
+    temperatura_pista = models.FloatField()
+    temperatura_ar = models.FloatField()
+    zonas_drs = models.FloatField()
     pista = models.CharField(max_length=100)
     tempo_total = models.FloatField()
     tipo_sessao = models.CharField(max_length=20)
