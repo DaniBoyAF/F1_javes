@@ -41,6 +41,17 @@ class salvar_dados_udp(View):
         )
         telemetria.save()
         return JsonResponse({'status': 'success'})
+class aceitar_solicitacao(View):
+    def __init__ (self,redirect, amizade_id):
+        self.redirect = redirect
+        self.amizade_id = amizade_id
+
+    def post(self, request):
+        # Aceitar solicitação de amizade
+        amizade = get_object_or_404(Amizade, id=self.amizade_id)
+        amizade.aceitar()
+        return redirect(self.redirect)
+
 class enviar_solicitacao(View):
     def __init__(self, redirect, destinatario_id):
         self.redirect = redirect
