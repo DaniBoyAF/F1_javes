@@ -1,5 +1,24 @@
 from django.db import models
 # Create your models here.
+class Usuario(models.Model):
+    Nome = models.CharField(max_length=1000)
+    Email = models.EmailField(max_length=1000)
+    Senha = models.CharField(max_length=1000)
+    
+    def __str__(self):
+        return self.Nome
+class Amizade(models.Model):
+    solicitante = models.ForeignKey(Usuario, related_name='solicitante', on_delete=models.CASCADE)
+    destinatario = models.ForeignKey(Usuario, related_name='destinatario', on_delete=models.CASCADE)
+    status= models.CharField(max_length=20, choices=[('pendente', 'Pendente'), ('aceito', 'Aceito'), ('recusado', 'Recusado')],
+                             default='pendente')
+    timestamp= models.DateTimeField(auto_now_add=True)
+    def aceitar(self):
+        self.status = 'aceito'
+        self.save()
+    def __str__(self):
+        return f"Amizade de {self.solicitante} para {self.destinatario} - {self.status}"
+
 class Telemetria(models.Model):
     nome_piloto = models.CharField(max_length=100)
     carro_id = models.IntegerField()
@@ -26,6 +45,7 @@ class SessionData(models.Model):
     tipo_sessao = models.CharField(max_length=20)
     num_voltas = models.IntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)
+
 class CarStatus(models.Model):
     carro_id = models.IntegerField()
     desgaste_pneus = models.JSONField()  # lista com 4 valores
@@ -33,7 +53,6 @@ class CarStatus(models.Model):
     temperatura_real = models.JSONField()
     composto_visual = models.CharField(max_length=20)
     tipo_pneus = models.CharField(max_length=20)  # exemplo: "soft", "medium", "hard"
-    
     timestamp = models.DateTimeField(auto_now_add=True)
    
 

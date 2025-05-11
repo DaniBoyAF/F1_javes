@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="{% static 'FF/favicon.ico' %}">
+    <title>{% block title %}F1 Telemetry{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'FF/styles.css' %}">
+</head>
+<body>
+    {% block content %}
+    <h1>F1 Telemetry</h1>
+    <div id="data-container"></div>
+    {% endblock %}
+</body>
+</html>
