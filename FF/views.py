@@ -27,7 +27,7 @@ class UsuarioView(View):
 class login_view(View):
     def get(self,request):
         # Renderizar a página de login
-        return render(request, 'FF/templates/login.html')
+        return render(request, 'FF/templates/logan.html')
     def post(self,request):
         email = request.POST.get('email')
         senha = request.POST.get('senha')
@@ -41,7 +41,7 @@ class login_view(View):
              messages.error(request, 'Senha incorreta')
         except Usuario.DoesNotExist:
              messages.error(request, 'Usuário não encontrado')
-        return render(request, 'login.html')
+        return render(request, 'FF/templates/login.html')
 class salvar_dados_udp(View):
     def post(self,request):
         # Obtem todos os dados de telemetria
@@ -149,6 +149,9 @@ class TelemetriaView(View):
                 tempo_total = request.POST.get('tempo_total')
                 tipo_sessao = request.POST.get('tipo_sessao')
                 num_voltas = int(request.POST.get('num_voltas', 0))
+                Coord_pista_x = float(request.POST.get('Coord_pista_x', 0))
+                Coord_pista_y = float(request.POST.get('Coord_pista_y', 0))
+                Coord_pista_z = float(request.POST.get('Coord_pista_z', 0))
                 sessionData = SessionData(
                     clima=clima,
                     temperatura_pista=temperatura_pista,
@@ -157,7 +160,11 @@ class TelemetriaView(View):
                     pista=pista,
                     tempo_total=tempo_total,
                     tipo_sessao=tipo_sessao,
-                    num_voltas=num_voltas
+                    num_voltas=num_voltas,
+                    Coord_pista_x=Coord_pista_x,
+                    Coord_pista_y=Coord_pista_y,
+                    Coord_pista_z=Coord_pista_z,
+
                 )
                 sessionData.save()
                 return redirect('/sessionData/')
@@ -207,6 +214,8 @@ class TelemetriaView(View):
              tempo_setor2 = float(request.POST.get('tempo_setor2'))
              tempo_setor3 = float(request.POST.get('tempo_setor3'))
              posicao = int(request.POST.get('posicao'))
+             localizacao_x = float(request.POST.get('localizacao_x'))
+             localizacao_y = float(request.POST.get('localizacao_y'))
              volta_valida = request.POST.get('volta_valida') == 'true'
 
              lapData = LapData(

@@ -61,8 +61,12 @@ class SessionData(models.Model):
     tipo_sessao = models.CharField(max_length=20)
     num_voltas = models.IntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    Coord_pista_x = models.FloatField()
+    Coord_pista_y = models.FloatField()
+    Coord_pista_z = models.FloatField()
+
     def __str__(self):
-        return f"Dados da Sessão - Clima: {self.clima} - Temperatura Pista: {self.temperatura_pista}°C - Temperatura Ar: {self.temperatura_ar}°C - Zonas DRS: {self.zonas_drs} - Pista: {self.pista} - Tempo Total: {self.tempo_total}s - Tipo de Sessão: {self.tipo_sessao} - Número de Voltas: {self.num_voltas}"
+        return f"Dados da Sessão - Clima: {self.clima} - Temperatura Pista: {self.temperatura_pista}°C - Temperatura Ar: {self.temperatura_ar}°C - Zonas DRS: {self.zonas_drs} - Pista: {self.pista} - Tempo Total: {self.tempo_total}s - Tipo de Sessão: {self.tipo_sessao} - Número de Voltas: {self.num_voltas} , - Coordenadas Pista: ({self.Coord_pista_x}, {self.Coord_pista_y}, {self.Coord_pista_z})"
    
 
 class CarStatus(models.Model):
@@ -93,9 +97,11 @@ class LapData(models.Model):
     tempo_setor3 = float(models.FloatField())
     posicao = int(models.IntegerField())
     volta_valida = models.BooleanField()
+    localizacao_x= models.FloatField()
+    localizacao_y= models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return f"Dados da Volta - Carro ID: {self.carro_id} - Piloto: {self.nome_piloto} - Volta: {self.volta} - Tempo da Volta: {self.tempo_volta}s - Tempo Setor 1: {self.tempo_setor1}s - Tempo Setor 2: {self.tempo_setor2}s - Tempo Setor 3: {self.tempo_setor3}s - Posição: {self.posicao} - Volta Válida: {self.volta_valida}"
+        return f"Dados da Volta - Carro ID: {self.carro_id} - Piloto: {self.nome_piloto} - Volta: {self.volta} - Tempo da Volta: {self.tempo_volta}s - Tempo Setor 1: {self.tempo_setor1}s - Tempo Setor 2: {self.tempo_setor2}s - Tempo Setor 3: {self.tempo_setor3}s - Posição: {self.posicao} - Volta Válida: {self.volta_valida}, - Localização: ({self.localizacao_x}, {self.localizacao_y})"
 
 class Penaty(models.Model):
     numero_carro = models.IntegerField()
