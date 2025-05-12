@@ -10,10 +10,24 @@ class InicioView(View):
     def get(self, request):
         # Renderizar a página inicial
         return render(request, 'index.html')
+class UsuarioView(View):
+    def cadastro(self, request):
+        #ir pra pagina do cadastro
+        if request.method == 'POST':
+            nome= request.POST.get('nome')
+            Email= request.POST.get('email')
+            senha= request.POST.get('senha')
+            if not nome or not Email or not senha:
+                return JsonResponse({'status': 'error', 'message': 'Dados obrigatórios estão faltando.'})
+            Usuario.objects.create(Nome=nome, Email=Email, Senha=senha)
+            return JsonResponse({'status': 'success', 'message': 'Usuário cadastrado com sucesso!'})
+        # Renderizar a página de cadastro
+        return render(request, 'FF/templates/cadastro.html')
+
 class login_view(View):
     def get(self,request):
         # Renderizar a página de login
-        return render(request, 'login.html')
+        return render(request, 'FF/templates/login.html')
     def post(self,request):
         email = request.POST.get('email')
         senha = request.POST.get('senha')

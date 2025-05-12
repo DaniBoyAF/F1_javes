@@ -6,7 +6,6 @@ from FF.udp_listener import udp_server
 
 urlpatterns = [
     path('', InicioView.as_view(), name='index'),
-    
     path('api/telemetria/', TelemetriaView.as_view(), name='telemetria'),
     path('api/sessao/', SessionData.as_view(), name='sessao'),
     path('api/status-carro/', CarStatus.as_view(), name='status_carro'),
@@ -16,4 +15,6 @@ urlpatterns = [
     path('amizade/aceitar/<int:amizade_id>/', aceitar_solicitacao.as_view(), name='aceitar_solicitacao'),
    # path('amizade/recusar/<int:amizade_id>/', recusar_solicitacao.as_view(), name='recusar_solicitacao'),
     path('login/', login_view.as_view(), name='login'),
-]
+    path('udp_listener/', udp_server, name='udp_listener'),
+    path('cadastro-view/', Usuario.as_view(), name='usuario'),
+  ]

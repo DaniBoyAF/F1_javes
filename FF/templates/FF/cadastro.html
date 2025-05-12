@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cadastro</title>
+        <style>
+            body {
+                margin: 0;
+                background-image: url("c.jpeg");
+                background-size: cover;
+                background-position: center;
+                font-family: Arial, sans-serif;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: #333;
+            }
+           /* Estilo do cabeçalho */
+        .header{
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        /* Estilo do logo */
+        .logo{
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        /* Estilo da área de login */
+        .login-area{
+            background-color: rgb(245, 245, 245);
+            border-radius: 10px;
+            padding: 20px;
+            width: 500px;
+            margin: auto;
+            margin-top: 50px;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        /* Estilo do título de login */
+        .login-title{
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        /* Estilo da caixa de mensagens */
+        .messages{
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgba(201, 199, 199, 0.9);
+        }
+        /* Estilo da mensagem individual */
+        .message{
+            margin: 5px 0;
+            color: #ff0000;
+        }
+        .voltar-link{
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 16px;
+            text-decoration: none;
+            background-color: rgba(39, 7, 218, 0.9);
+            padding: 10px 15px;
+        }
+        voltar-link:hover{
+            background-color: rgba(39,7, 218, 0.7);
+        }
+        /* estilo do cadastro */
+        .cadastro-link{
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+    </head>
+    <body>
+       
+        <div class="login-area">
+            <div class="login-title">Cadastro</div>
+            <form method="POST" action="{% url 'FF:cadastro' %}">
+                {% csrf_token %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                <label for="username" class="form-label">Nome de Usuário:</label><br>
+                <input type="text" id="username" name="username" required><br><br>
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" required><br><br>
+                <label for="password">Senha:</label><br>
+                <input type="password" id="password" name="password" required><br><br>
+                <input type="submit" value="Cadastrar">
+            </form>
+            <div class="cadastro-link">
+                Já tem uma conta? <a href="{% url 'FF:logar' %}">Faça login</a>
+            </div>
+        <body>
+    </html>
