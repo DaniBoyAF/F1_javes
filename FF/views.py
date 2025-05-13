@@ -9,7 +9,12 @@ from django.contrib import messages
 class InicioView(View):
     def get(self, request):
         # Renderizar a página inicial
-        return render(request, 'index.html')
+        usuario = request.user.usario
+        if usuario.is_authenticated:
+            # Obtem todos os dados de telemetria
+            telemetria = Telemetria.objects.all()
+            return render(request, 'FF/index.html', {'telemetria': telemetria})
+        
 class UsuarioView(View):
     def cadastro(self, request):
         #ir pra pagina do cadastro

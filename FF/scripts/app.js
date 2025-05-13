@@ -19,4 +19,4 @@ document.addEventListener('DOMContentLoaded', () => {
             button.addEventListener('mouseout', () => {
                 button.style.transform = 'scale(1)';
             });
-        });
+        })

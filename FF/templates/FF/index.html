@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ready to drive?</title>
-    <link rel="stylesheet" href="/FF/styles/style.css">
+    <link rel="stylesheet" href="{% static 'FF/styles/style.css' %}">
 </head>
 <body>
     <div class="container">
@@ -19,10 +19,10 @@
                     <li>Recorded<a href="Recorded.html"><button class="sidebar-btn">IR</button></a></li>
                     <li>Friends <button class="sidebar-btn">+</button></li>
                     <li class="active"><span class="dot"></span> Open Recorder</li>
-                    <li><a href="settings.html"><button class="sidebar-btn">Settings</button></a></li>
-                    <li><a href="help.html"><button class="sidebar-btn">Help</button></a></li>
-                    <li><a href="about.html"><button class="sidebar-btn">About</button></a></li>
-                    <li><a href="contact.html"><button class="sidebar-btn">Contact</button></a></li>
+                    <li><a href="{% url 'settings' %}"><button class="sidebar-btn">Settings</button></a></li>
+                    <li><a href="{% url 'help' %}"><button class="sidebar-btn">Help</button></a></li>
+                    <li><a href="{% url 'about' %}"><button class="sidebar-btn">About</button></a></li>
+                    <li><a href="{% url 'contact' %}"><button class="sidebar-btn">Contact</button></a></li>
                     {% if username %}
                     <li class="sidebar-bt"><p>Bem-vindo, {{ username }}!</p></li>
                     <li class="sidebar-btn"><a href="/logout">Sair</a></li>
@@ -61,6 +61,6 @@
             </div>
         </main>
     </div>
-    <script src="/FF/scripts/app.js"></script>
+    <script src="{% static 'FF/scripts/app.js' %}"></script>
 </body>
 </html>
