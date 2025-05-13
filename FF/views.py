@@ -47,41 +47,6 @@ class login_view(View):
         except Usuario.DoesNotExist:
              messages.error(request, 'Usuário não encontrado')
         return render(request, 'FF/templates/login.html')
-class salvar_dados_udp(View):
-    def post(self,request):
-        # Obtem todos os dados de telemetria
-        nome_piloto = request.POST.get('nome_piloto')
-        carro_id = request.POST.get('carro_id')
-        velocidade = request.POST.get('velocidade')
-        marcha = request.POST.get('marcha')
-        freio = request.POST.get('freio')
-        acelerador = request.POST.get('acelerador')
-        rpm_motor = request.POST.get('rpm_motor')
-        rpm_max = request.POST.get('rpm_max')
-        rpm_ideal = request.POST.get('rpm_ideal')
-        drs_ativo = request.POST.get('drs_ativo') == 'true'
-        ers_disponivel = request.POST.get('ers_disponivel')
-        nivel_combustivel = request.POST.get('nivel_combustivel')
-
-        # Criar um novo registro de telemetria
-        telemetria = Telemetria(
-            nome_piloto=nome_piloto,
-            carro_id=carro_id,
-            velocidade=velocidade,
-            marcha=marcha,
-            freio=freio,
-            Acelerador=acelerador,
-            rpm_motor=rpm_motor,
-            rpm_max=rpm_max,
-            rpm_ideal=rpm_ideal,
-            drs_ativo=drs_ativo,
-            ers_disponivel=ers_disponivel,
-            nivel_combustivel=nivel_combustivel
-        )
-        if not nome_piloto or not carro_id:
-          return JsonResponse({'status': 'error', 'message': 'Dados obrigatórios estão faltando.'})
-        telemetria.save()
-        return JsonResponse({'status': 'success'})
 class aceitar_solicitacao(View):
     def post(self, request, amizade_id):
         amizade = get_object_or_404(Amizade, id=amizade_id)

@@ -1,7 +1,7 @@
 from django.urls import path ,include
 from django.contrib import admin
 from FF.views import InicioView, TelemetriaView,SessionData, CarStatus, LapData,Penaty, Usuario, Amizade, login_view, aceitar_solicitacao, enviar_solicitacao
-from FF.udp_listener import udp_server
+from FF.udp_listener_example import udp_server
 
 
 urlpatterns = [
