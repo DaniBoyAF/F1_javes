@@ -1,0 +1,82 @@
+{%load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head> 
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Telemetria</title>
+        <style>
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                margin: 20px 0;
+                margin-top: 50px;
+                background-color:rgb(0, 0, 0);
+                color: white;
+            }
+            th, td {
+                border: 1px solid #ddd;
+                padding: 8px 12px;
+                text-align: center;
+            }
+            th {
+                background:rgb(36, 8, 8);
+
+            }
+            tr:nth-child(even) {
+                background-color: rgb(0, 0, 0);
+            }
+        </style>
+    </head>
+    <body>
+       <h2>Telemetria</h2>
+       <table id="tabela-telemetria">
+          <tr>
+            <th>Piloto</th>
+            <th>Voltas</th>
+            <th>Tempo</th>
+            <th>Status</th>
+          </tr>
+          {% for data in telemetria %}
+          <tr onclick="mostrarDetalhes('{{ data.nome_piloto }}', '{{ data.velocidade }}', '{{ data.marcha }}', '{{ data.tempo }}')">
+            <td>{{ data.nome_piloto }}</td>
+            <td>{{ data.volta }}</td>
+            <td>{{ data.tempo }}</td>
+            <td>{{ data.status }}</td>
+            <td>
+                {% if data.volta_valida %}
+                    <span style="color: #0f0;">Válida</span>
+                {% else %}
+                    <span style="color: #f00;">Inválida</span>
+                {% endif %}
+            </td>
+            <td>{{ data.tempo_volta|default:"--" }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+
+        <div id="modal" style="display:none; position:fixed; top:20%; left:30%; background:#222; color:#fff; padding:20px;">
+          <span id="detalhes"></span>
+          <button onclick="document.getElementById('modal').style.display='none'">Fechar</button>
+        </div>
+
+        <script>
+            function showWelcomeMessage() {
+                alert("Bem-vindo ao sistema de telemetria!");
+            }
+            setInterval(function() {
+    fetch("{% url 'tabela_telemetria' %}")
+      .then(resp => resp.text())
+      .then(html => {
+        document.getElementById('tabela-telemetria').innerHTML = html;
+      });
+}, 2000); // Atuali999za a tabela a cada 2 segundos
+
+            function mostrarDetalhes(nome, velocidade, marcha, tempo) {
+    document.getElementById('detalhes').innerHTML =
+      "Piloto: " + nome + "<br>Velocidade: " + velocidade + "<br>Marcha: " + marcha + "<br>Tempo: " + tempo;
+    document.getElementById('modal').style.display = 'block';
+}
+        </script>
+    </body>
+</html>

@@ -1,15 +1,16 @@
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render ,redirect
 from django.views import View
-from FF.models import Telemetria, SessionData, CarStatus, LapData, Penaty, Usuario, Amizade 
+from FF.models import Telemetria, SessionData, CarStatus, LapData, Penaty, Usuario, Amizade , UniaoView
 from django.http import JsonResponse
 from django.contrib.auth.hashers import check_password
 from django.contrib import messages
-
+import json
 class InicioView(View):
     def get(self, request):
         # Renderizar a página inicial
-        usuario = request.user.usario
+        usuario = request.user
+        # Verifica se o usuário está autenticado
         if usuario.is_authenticated:
             # Obtem todos os dados de telemetria
             telemetria = Telemetria.objects.all()
@@ -83,7 +84,6 @@ class TelemetriaView(View):
         rpm_motor = int(request.POST.get('rpm_motor'))
         drs_ativo = request.POST.get('drs_ativo') == 'true'
         ers_disponivel = request.POST.get('ers_disponivel') =='true'
-        # Adicionei o campo ers_percentagem
         ers_percentagem = int(request.POST.get('ers_percentagem'))
         nivel_combustivel = float(request.POST.get('nivel_combustivel'))
 
@@ -149,9 +149,9 @@ class TelemetriaView(View):
               # Criar um novo registro de status do carro
               carro_id = request.POST.get('carro_id')
               nome_piloto = request.POST.get('nome_piloto')
-              desgaste_pneus = int(request.POST.get('desgaste_pneus'))
-              temperatura_pneus = float(request.POST.get('temperatura_pneus'))
-              temperatura_real = float(request.POST.get('temperatura_real'))
+              desgaste_pneus = json.loads(request.POST.get('desgaste_pneus', '[]'))
+              temperatura_pneus = json.loads(request.POST.get('temperatura_pneus', '[]'))
+              temperatura_real = json.loads(request.POST.get('temperatura_real', '[]'))
               composto_visual = request.POST.get('composto_visual')
               tipo_pneus = request.POST.get('tipo_pneus')
 
@@ -197,7 +197,9 @@ class TelemetriaView(View):
                  tempo_setor2=tempo_setor2,
                  tempo_setor3=tempo_setor3,
                  posicao=posicao,
-                 volta_valida=volta_valida
+                 volta_valida=volta_valida,
+                 localizacao_x=localizacao_x,
+                 localizacao_y=localizacao_y
              )
              lapData.save()
              return redirect('/lapData/')
@@ -212,7 +214,7 @@ class TelemetriaView(View):
              numero_carro = request.POST.get('numero_carro')
              nome_piloto = request.POST.get('nome_piloto')
              volta = int(request.POST.get('volta'))
-             tipo_punicao = int(request.POST.get('tipo_punicao'))
+             tipo_punicao = request.POST.get('tipo_punicao')
              tempo_punicao = int(request.POST.get('tempo_punicao'))
 
              penalty = Penaty(
@@ -224,3 +226,12 @@ class TelemetriaView(View):
              )
              penalty.save()
              return redirect('/penalty/')
+     class UniaoView(View):
+        def get(self, request):
+            # Obter todos os dados 
+            penalty = Penaty.objects.all()
+            lapData = LapData.objects.all()
+            carStatus = CarStatus.objects.all()
+            sessionData = SessionData.objects.all()
+            telemetria = Telemetria.objects.all()
+            return render(request, 'telemetria.html', {'penalty': penalty, 'LapData': lapData, 'CarStatus': carStatus, 'SessionData': sessionData, 'Telemetria': telemetria})
