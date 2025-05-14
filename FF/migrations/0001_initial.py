@@ -90,7 +90,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            nome='Penaty',
+            name='Penaty',
             fields=[
                 ('numero_carro',models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nome_piloto', models.CharField(max_length=100)),
@@ -102,7 +102,7 @@ class Migration(migrations.Migration):
             ]
         ),
         migrations.CreateModel(
-            nome='Amizade',
+            name='Amizade',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('solicitante', models.CharField(max_length=100)),
@@ -111,7 +111,7 @@ class Migration(migrations.Migration):
             ]
         ),
         migrations.CreateModel(
-            nome='Usuario',
+            name='Usuario',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nome', models.CharField(max_length=1000)),

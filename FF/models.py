@@ -1,11 +1,13 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
+from django.utils import timezone
 # Create your models here.
 class Usuario(models.Model):
     Nome = models.CharField(max_length=1000)
     Email = models.EmailField(max_length=1000)
     Senha = models.CharField(max_length=200)
+    
     def get(self,request):
         return render(request, 'FF/templates/cadastro.html')
     def save(self, *args, **kwargs):
@@ -26,6 +28,8 @@ class Amizade(models.Model):
     status= models.CharField(max_length=20, choices=[('pendente', 'Pendente'), ('aceito', 'Aceito'), ('recusado', 'Recusado')],
                              default='pendente')
     timestamp= models.DateTimeField(auto_now_add=True)
+    def salvar(self):
+        self.save()
     def aceitar(self):
         self.status = 'aceito'
         self.save()
@@ -48,6 +52,11 @@ class Telemetria(models.Model):
     ers_percentagem = models.FloatField()
     nivel_combustivel = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    def save(self, *args, **kwargs):
+        # Aqui você pode adicionar lógica para verificar se o carro já existe
+        if Telemetria.objects.filter(carro_id=self.carro_id).exists():
+            raise ValueError("Carro já existe")
+        return super().save(*args, **kwargs)
     def __str__(self):
         return f"Telemetria de {self.nome_piloto} - Carro ID: {self.carro_id} - Velocidade: {self.velocidade} km/h - Marcha: {self.marcha} - RPM: {self.rpm_motor} - DRS Ativo: {self.drs_ativo} - ERS Disponível: {self.ers_disponivel} - Combustível: {self.nivel_combustivel}"
     
@@ -83,6 +92,11 @@ class CarStatus(models.Model):
     dano_aerodinamicos_traseiro = models.FloatField()  # percentual de dano
     danos_no_chassis = models.FloatField()  # percentual de dano
     timestamp = models.DateTimeField(auto_now_add=True)
+    def save(self, *args, **kwargs):
+        # Aqui você pode adicionar lógica para verificar se o carro já existe
+        if CarStatus.objects.filter(carro_id=self.carro_id).exists():
+            raise ValueError("Carro já existe")
+        return super().save(*args, **kwargs)
     def __str__(self):
         return f"Status do Carro - Piloto: {self.nome_piloto} - Carro ID: {self.carro_id} - Desgaste Pneus: {self.desgaste_pneus} - Temperatura Pneus: {self.temperatura_pneus} - Temperatura Real: {self.temperatura_real} - Composto Visual: {self.composto_visual} - Tipo de Pneus: {self.tipo_pneus} - Dano Aerodinâmico Frontal: {self.dano_aerodinamicos_frontal}% - Dano Frontal Esquerdo: {self.dano_frontal_esquerdo}% - Dano Frontal Direito: {self.dano_frontal_direito}% - Dano Aerodinâmico Traseiro: {self.dano_aerodinamicos_traseiro}% - Danos no Chassi: {self.danos_no_chassis}%"
    
@@ -90,21 +104,21 @@ class CarStatus(models.Model):
 class LapData(models.Model):
     carro_id = models.IntegerField()
     nome_piloto = models.CharField(max_length=100)
-    volta = int(models.IntegerField())
+    volta = models.IntegerField()
     tempo_volta = models.FloatField()
-    tempo_setor1 = float(models.FloatField())
-    tempo_setor2 = float(models.FloatField())
-    tempo_setor3 = float(models.FloatField())
-    posicao = int(models.IntegerField())
+    tempo_setor1 = models.FloatField()
+    tempo_setor2 = models.FloatField()
+    tempo_setor3 = models.FloatField()
+    posicao = models.IntegerField()
     volta_valida = models.BooleanField()
-    localizacao_x= models.FloatField()
-    localizacao_y= models.FloatField()
+    localizacao_x = models.FloatField()
+    localizacao_y = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"Dados da Volta - Carro ID: {self.carro_id} - Piloto: {self.nome_piloto} - Volta: {self.volta} - Tempo da Volta: {self.tempo_volta}s - Tempo Setor 1: {self.tempo_setor1}s - Tempo Setor 2: {self.tempo_setor2}s - Tempo Setor 3: {self.tempo_setor3}s - Posição: {self.posicao} - Volta Válida: {self.volta_valida}, - Localização: ({self.localizacao_x}, {self.localizacao_y})"
 
 class Penaty(models.Model):
-    numero_carro = models.IntegerField()
+    carro_id = models.IntegerField()
     nome_piloto = models.CharField(max_length=100)
     volta = models.IntegerField()
     tipo_punicao = models.CharField(max_length=100)  # exemplo: "track limits", "collision"
@@ -112,4 +126,4 @@ class Penaty(models.Model):
     cumprida = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return f"Penalidade - Carro ID: {self.numero_carro} - Piloto: {self.nome_piloto} - Volta: {self.volta} - Tipo de Penalidade: {self.tipo_punicao} - Tempo de Penalidade: {self.tempo_punicao}s - Cumprida: {self.cumprida}"
+        return f"Penalidade - Carro ID: {self.carro_id} - Piloto: {self.nome_piloto} - Volta: {self.volta} - Tipo de Penalidade: {self.tipo_punicao} - Tempo de Penalidade: {self.tempo_punicao}s - Cumprida: {self.cumprida}"
