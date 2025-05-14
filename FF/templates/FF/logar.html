@@ -1,126 +1,212 @@
+{% load static %}
+{% load messages %}
 <!DOCTYPE html>
-<html lang="Pt-br">
-    <head> 
-    <meta charset="UTF=8">
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Login</title>
-
-    <style>
-               /* Fundo da página com imagem e fonte padrão */
-        body {
-            margin: 0;
-            background-image: url("enginer.avif");
-            background-size: cover;
-            background-position: center;
-            font-family: Arial, sans-serif;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        /* Estilo do cabeçalho */
-        .header{
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        /* Estilo do logo */
-        .logo{
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-        }
-        /* Estilo da área de login */
-        .login-area{
-            background-color: rgba(0, 0, 0, 0.9);
-            border-radius: 10px;
-            padding: 20px;
-            width: 500px;
-            margin: auto;
-            margin-top: 50px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-        /* Estilo do título de login */
-        .login-title{
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        /* Estilo da caixa de mensagens */
-        .messages{
-            margin-bottom: 20px;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: rgba(19, 1, 1, 0.9);
-        }
-        /* Estilo da mensagem individual */
-        .message{
-            margin: 5px 0;
-            color: #ff0000;
-        }
-        .voltar-link{
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            font-size: 16px;
-            text-decoration: none;
-            background-color: rgba(39, 7, 218, 0.9);
-            padding: 10px 15px;
-        }
-        voltar-link:hover{
-            background-color: rgba(39,7, 218, 0.7);
-        }
-        /* estilo do cadastro */
-        .cadastro-link{
-            margin-top: 20px;
-            text-align: center;
-        }
-    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'FF/styles/style.css' %}">
+    <style>
+        body {
+    margin: 0;
+    background-image: url("{% static 'FF/images/c.jpeg' %}");
+    background-size: cover;
+    background-position: center;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+}
+
+/* Cabeçalho */
+.header {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+/* Logo */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Área de login */
+.login-area {
+    background-color: rgb(245, 245, 245);
+    border-radius: 10px;
+    padding: 20px;
+    width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-top: 80px; /* Para evitar sobreposição com o cabeçalho */
+}
+
+/* Título de login */
+.login-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Caixa de mensagens */
+.messages {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgba(201, 199, 199, 0.9);
+}
+
+.message {
+    margin: 5px 0;
+    color: #ff0000;
+}
+
+/* Botão de voltar */
+.voltar-link {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+    background-color: rgba(39, 7, 218, 0.9);
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.voltar-link:hover {
+    background-color: rgba(39, 7, 218, 0.7);
+}
+
+/* Formulário */
+.form-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 10px 10px 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.form-group .icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #888;
+}
+
+/* Botão de login */
+.login-btn {
+    width: 100%;
+    background-color: #17695e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+    background-color: #0e4d43;
+}
+
+/* Opções de login */
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.forgot-link {
+    color: #17695e;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.forgot-link:hover {
+    color: #0e4d43;
+}
+
+/* Link de cadastro */
+.cadastro-link {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.cadastro-link a {
+    color: #17695e;
+    text-decoration: underline;
+}
+
+.cadastro-link a:hover {
+    color: #0e4d43;
+}
+    </style>
 </head>
 <body>
     <div class="header">
         <div class="logo">
             Telemetry<br> PRO
         </div>
-        <div class="login-area">
-            <a href="{% url 'index' %}" class="voltar-link">Voltar</a>
-            <div class="login-box">
-                <div class="login-title">Login</div>
-                {% if messages %}
-                    <div class="messages">
-                        {% for message in messages %}
-                            <div class="message">{{ message }}</div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <i class="fas fa-user icon"></i>
-                        <input type="text" name="username" placeholder="Usuário" required>
-                    </div>
-                    <div class="form-group">
-                        <i class="fas fa-lock icon"></i>
-                        <input type="password" name="senha" placeholder="Senha" required>
-                    </div>
-                    <button type="submit" class="login-btn">Login</button>
-                    <div class="login-options">
-                        <label>
-                            <input type="checkbox" name="lembrar" checked>
-                            Manter conectado
-                        </label>
-                        <a href="#" class="forgot-link">Esqueci minha senha</a>
-                    </div>
-                    <div class="cadastro-link">
-                        Não tem uma conta? <a href="{% url 'cadastro' %}" class=".cadastro-link">Cadastre-se</a>
-                    </div>
-                </form>
-            </div>
-        </body>
-    </html>
+    </div>
+    <div class="login-area">
+        <a href="{% url 'index' %}" class="voltar-link">Voltar</a>
+        <div class="login-box">
+            <div class="login-title">Login</div>
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <i class="fas fa-user icon"></i>
+                    <input type="text" name="username" placeholder="Usuário" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock icon"></i>
+                    <input type="password" name="senha" placeholder="Senha" required>
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+                <div class="login-options">
+                    <label>
+                        <input type="checkbox" name="lembrar" checked>
+                        Manter conectado
+                    </label>
+                    <a href="#" class="forgot-link">Esqueci minha senha</a>
+                </div>
+                <div class="cadastro-link">
+                    Não tem uma conta? <a href="{% url 'cadastro' %}" class="cadastro-link">Cadastre-se</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
