@@ -235,3 +235,13 @@ class TelemetriaView(View):
             sessionData = SessionData.objects.all()
             telemetria = Telemetria.objects.all()
             return render(request, 'telemetria.html', {'penalty': penalty, 'LapData': lapData, 'CarStatus': carStatus, 'SessionData': sessionData, 'Telemetria': telemetria})
+    
+     class DadosF1API(View):
+         def get(self, request):
+             return JsonResponse({
+                 'telemetria': list(Telemetria.objects.values()),
+                 'sessionData': list(SessionData.objects.values()),
+                 'carStatus': list(CarStatus.objects.values()),
+                 'lapData': list(LapData.objects.values()),
+                 'penalty': list(Penaty.objects.values())
+             })
