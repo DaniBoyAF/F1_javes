@@ -4,7 +4,8 @@ import os
 import django
 import sys
 import datetime
-
+from FF.parsers import PacketHeader,HEADER_FIELD_TO_PACKET_TYPE
+import ctypes
 
 # --- CONFIGURAÇÃO DO LOG DE ERROS ---
 # Idealmente, este caminho seria configurável ou relativo ao projeto
@@ -81,97 +82,97 @@ def udp_server_listener(host="0.0.0.0", port=20777):
         try:
             data, addr = sock.recvfrom(2048) # Buffer de 2KB
             # Aqui você chama o parser real (quando implementar)
-            parsed_packet = parse_f1_packet(data)
+            parsed = parse_f1_packet(data)
 
-            if not parsed_packet:
+            if not parsed:
                 # Erro já logado dentro do parser ou parser não implementado
                 continue
 
-            packet_type = parsed_packet.get('type')
+            packet_type = parsed.get('type')
 
             if packet_type == 'telemetry':
                 obj = Telemetria(
-                    nome_piloto=parsed_packet.get('nome_piloto'),
-                    carro_id=parsed_packet.get('carro_id'),
-                    velocidade=parsed_packet.get('velocidade'),
-                    marcha=parsed_packet.get('marcha'),
-                    freio=parsed_packet.get('freio'),
-                    Acelerador=parsed_packet.get('Acelerador'),
-                    rpm_motor=parsed_packet.get('rpm_motor'),
-                    drs_ativo=parsed_packet.get('drs_ativo'),
-                    ers_disponivel=parsed_packet.get('ers_disponivel'),
-                    ers_percentagem=parsed_packet.get('ers_percentagem'),
-                    nivel_combustivel=parsed_packet.get('nivel_combustivel')
+                    nome_piloto=parsed.get('nome_piloto'),
+                    carro_id=parsed.get('carro_id'),
+                    velocidade=parsed.get('velocidade'),
+                    marcha=parsed.get('marcha'),
+                    freio=parsed.get('freio'),
+                    Acelerador=parsed.get('Acelerador'),
+                    rpm_motor=parsed.get('rpm_motor'),
+                    drs_ativo=parsed.get('drs_ativo'),
+                    ers_disponivel=parsed.get('ers_disponivel'),
+                    ers_percentagem=parsed.get('ers_percentagem'),
+                    nivel_combustivel=parsed.get('nivel_combustivel')
                 )
                 obj.save()
                 print(f"Salvo: Telemetria para {obj.nome_piloto}")
 
             elif packet_type == 'session_data':
                 obj = SessionData(
-                    clima=parsed_packet.get('clima'),
-                    temperatura_pista=parsed_packet.get('temperatura_pista'),
-                    temperatura_ar=parsed_packet.get('temperatura_ar'),
-                    zonas_drs=parsed_packet.get('zonas_drs'),
-                    pista=parsed_packet.get('pista'),
-                    tempo_total=parsed_packet.get('tempo_total'),
-                    tipo_sessao=parsed_packet.get('tipo_sessao'),
-                    num_voltas=parsed_packet.get('num_voltas'),
-                    Coord_pista_x=parsed_packet.get('Coord_pista_x'),
-                    Coord_pista_y=parsed_packet.get('Coord_pista_y'),
-                    Coord_pista_z=parsed_packet.get('Coord_pista_z')
+                    clima=parsed.get('clima'),
+                    temperatura_pista=parsed.get('temperatura_pista'),
+                    temperatura_ar=parsed.get('temperatura_ar'),
+                    zonas_drs=parsed.get('zonas_drs'),
+                    pista=parsed.get('pista'),
+                    tempo_total=parsed.get('tempo_total'),
+                    tipo_sessao=parsed.get('tipo_sessao'),
+                    num_voltas=parsed.get('num_voltas'),
+                    Coord_pista_x=parsed.get('Coord_pista_x'),
+                    Coord_pista_y=parsed.get('Coord_pista_y'),
+                    Coord_pista_z=parsed.get('Coord_pista_z')
                 )
                 obj.save()
                 print(f"Salvo: Dados da Sessão para pista {obj.pista}")
 
             elif packet_type == 'car_status':
                 obj = CarStatus(
-                    nome_piloto=parsed_packet.get('nome_piloto'),
-                    carro_id=parsed_packet.get('carro_id'),
-                    desgaste_pneus=parsed_packet.get('desgaste_pneus'),
-                    temperatura_pneus=parsed_packet.get('temperatura_pneus'),
-                    temperatura_real=parsed_packet.get('temperatura_real'),
-                    composto_visual=parsed_packet.get('composto_visual'),
-                    tipo_pneus=parsed_packet.get('tipo_pneus'),
-                    dano_aerodinamicos_frontal=parsed_packet.get('dano_aerodinamicos_frontal'),
-                    dano_frontal_esquerdo=parsed_packet.get('dano_frontal_esquerdo'),
-                    dano_frontal_direito=parsed_packet.get('dano_frontal_direito'),
-                    dano_aerodinamicos_traseiro=parsed_packet.get('dano_aerodinamicos_traseiro'),
-                    danos_no_chassis=parsed_packet.get('danos_no_chassis')
+                    nome_piloto=parsed.get('nome_piloto'),
+                    carro_id=parsed.get('carro_id'),
+                    desgaste_pneus=parsed.get('desgaste_pneus'),
+                    temperatura_pneus=parsed.get('temperatura_pneus'),
+                    temperatura_real=parsed.get('temperatura_real'),
+                    composto_visual=parsed.get('composto_visual'),
+                    tipo_pneus=parsed.get('tipo_pneus'),
+                    dano_aerodinamicos_frontal=parsed.get('dano_aerodinamicos_frontal'),
+                    dano_frontal_esquerdo=parsed.get('dano_frontal_esquerdo'),
+                    dano_frontal_direito=parsed.get('dano_frontal_direito'),
+                    dano_aerodinamicos_traseiro=parsed.get('dano_aerodinamicos_traseiro'),
+                    danos_no_chassis=parsed.get('danos_no_chassis')
                 )
                 obj.save()
                 print(f"Salvo: Status do Carro para {obj.nome_piloto}")
-
+        
             elif packet_type == 'lap_data':
                 obj = LapData(
-                    carro_id=parsed_packet.get('carro_id'),
-                    nome_piloto=parsed_packet.get('nome_piloto'),
-                    volta=parsed_packet.get('volta'),
-                    tempo_volta=parsed_packet.get('tempo_volta'),
-                    tempo_setor1=parsed_packet.get('tempo_setor1'),
-                    tempo_setor2=parsed_packet.get('tempo_setor2'),
-                    tempo_setor3=parsed_packet.get('tempo_setor3'),
-                    posicao=parsed_packet.get('posicao'),
-                    volta_valida=parsed_packet.get('volta_valida'),
-                    localizacao_x=parsed_packet.get('localizacao_x'),
-                    localizacao_y=parsed_packet.get('localizacao_y')
+                    carro_id=parsed.get('carro_id'),
+                    nome_piloto=parsed.get('nome_piloto'),
+                    volta=parsed.get('volta'),
+                    tempo_volta=parsed.get('tempo_volta'),
+                    tempo_setor1=parsed.get('tempo_setor1'),
+                    tempo_setor2=parsed.get('tempo_setor2'),
+                    tempo_setor3=parsed.get('tempo_setor3'),
+                    posicao=parsed.get('posicao'),
+                    volta_valida=parsed.get('volta_valida'),
+                    localizacao_x=parsed.get('localizacao_x'),
+                    localizacao_y=parsed.get('localizacao_y')
                 )
                 obj.save()
                 print(f"Salvo: Dados da Volta {obj.volta} para {obj.nome_piloto}")
 
             elif packet_type == 'penalty_data': # Modelo é 'Penaty'
                 obj = Penaty(
-                    numero_carro=parsed_packet.get('numero_carro'),
-                    nome_piloto=parsed_packet.get('nome_piloto'),
-                    volta=parsed_packet.get('volta'),
-                    tipo_punicao=parsed_packet.get('tipo_punicao'),
-                    tempo_punicao=parsed_packet.get('tempo_punicao'),
-                    cumprida=parsed_packet.get('cumprida')
+                    carro_id=parsed.get('carro_id'),
+                    nome_piloto=parsed.get('nome_piloto'),
+                    volta=parsed.get('volta'),
+                    tipo_punicao=parsed.get('tipo_punicao'),
+                    tempo_punicao=parsed.get('tempo_punicao'),
+                    cumprida=parsed.get('cumprida')
                 )
                 obj.save()
                 print(f"Salvo: Penalidade para {obj.nome_piloto}")
             
             else:
-                log_error(f"Tipo de pacote desconhecido ou não mapeado para modelo: {packet_type}. Dados: {parsed_packet}")
+                log_error(f"Tipo de pacote desconhecido ou não mapeado para modelo: {packet_type}. Dados: {parsed}")
 
         except Exception as e:
             log_error(f"Erro geral no loop do servidor UDP: {e}. Addr: {addr}")

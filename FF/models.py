@@ -127,3 +127,35 @@ class Penaty(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"Penalidade - Carro ID: {self.carro_id} - Piloto: {self.nome_piloto} - Volta: {self.volta} - Tipo de Penalidade: {self.tipo_punicao} - Tempo de Penalidade: {self.tempo_punicao}s - Cumprida: {self.cumprida}"
+
+class WeatherForecast(models.Model):
+    time = models.IntegerField()
+    weather = models.CharField(max_length=50)
+    trackTemp = models.FloatField()
+    airTemp = models.FloatField()
+    rainPercentage = models.FloatField()
+    session = models.ForeignKey('SessionModel', on_delete=models.CASCADE, related_name='weather_forecasts')
+
+class SessionModel(models.Model):
+    airTemperature = models.FloatField()
+    trackTemperature = models.FloatField()
+    nbLaps = models.IntegerField()
+    currentLap = models.IntegerField()
+    tour_precedent = models.IntegerField()
+    Seance = models.IntegerField()
+    Finished = models.BooleanField(default=False)
+    time_left = models.IntegerField()
+    legende = models.CharField(max_length=100)
+    track = models.IntegerField()
+    nb_players = models.IntegerField()
+    formationLapDone = models.BooleanField(default=False)
+    circuit_changed = models.BooleanField(default=False)
+class TypeStint(models.Model):
+    carro_id = models.FloatField()
+    nome_piloto = models.FloatField(max_length=100)
+    stint_num= models.FloatField()
+    tipo_pneu_real= models.CharField(max_length=100)
+    tipo_pneu_visual = models.CharField(max_length=20)
+    volta_inicio = models.IntegerField()
+    volta_fim = models.IntegerField()
+    session = models.ForeignKey('SessionModel', on_delete=models.CASCADE)
